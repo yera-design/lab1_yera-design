@@ -14,26 +14,13 @@ I.REQUIREMENTS
 
 No external Python libraries are needed – only the standard csv, os, and sys modules.
 
-II.FILE STRUCTURE
-
-Place all files in the same directory:
-
-project_name/
-
-├── grade-evaluator.py
-
-├── organizer.sh
-
-├── grades.csv
-          
-└── archive/
-
+II.PURPOSE FOR EACH SCRIPT
             
-1.Python Script – grade-evaluator.py
+1.PYTHON SCRIPT – grade-evaluator.py
 
 Purpose
 
-Reads a CSV file with the columns:
+1.Reads a CSV file with the columns:
 
 assignment – name of the assignment
 
@@ -45,17 +32,17 @@ weight – weight of the assignment (percentage of the total grade)
 
 It then:
 
-1.Validates that all scores are between 0 and 100.
+2.Validates that all scores are between 0 and 100.
 
-2.Checks that the sum of all weights equals 100, formative weights sum to 60, and summative weights sum to 40.
+3.Checks that the sum of all weights equals 100, formative weights sum to 60, and summative weights sum to 40.
 
-3.Computes the final grade (out of 100) and GPA (out of 5.0).
+4.Computes the final grade (out of 100) and GPA (out of 5.0).
 
-4.Calculates the average score in the formative and summative groups.
+5.Calculates the average score in the formative and summative groups.
 
-5.Determines pass/fail: a student passes only if both group averages are ≥ 50%.
+6.Determines pass/fail: a student passes only if both group averages are ≥ 50%.
 
-6.Suggests which formative assignment(s) to resubmit: those that scored < 50% and have the highest weight among failed formatives.
+7.Suggests which formative assignment(s) to resubmit: those that scored < 50% and have the highest weight among failed formatives.
 
 How to run
 
@@ -68,7 +55,7 @@ python grade-evaluator.py or /.grade-evaluator.py
 When prompted, enter the name of the CSV file (e.g., grades.csv).
 The script will process the file and print the results.
 
-2.Organizer.sh
+2.BASH SCRIPT - organizer.sh
 
 Purpose
 
