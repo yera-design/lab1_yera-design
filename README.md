@@ -19,10 +19,15 @@ II.FILE STRUCTURE
 Place all files in the same directory:
 
 project_name/
+
 ├── grade-evaluator.py
+
 ├── organizer.sh
-├── grades.csv          
+
+├── grades.csv
+          
 └── archive/
+
             
 1.Python Script – grade-evaluator.py
 
