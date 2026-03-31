@@ -3,42 +3,65 @@ import csv
 import sys
 import os
 
+REQUIRED_COLUMNS = {'assignment', 'group', 'score', 'weight'}
+
 def load_csv_data():
-    """
-    Prompts the user for a filename, checks if it exists, 
-    and extracts all fields into a list of dictionaries.
-    """
-    filename = input("Enter the name of the CSV file to process: ")
-    
+    filename = input("Enter the name of the CSV file to process: ").strip()
+
     if not os.path.exists(filename):
-        print(f"Error: The file '{filename}' was not found.")
+        print(f" Ooops the file '{filename}' was not found,First make sure that {filename} exists!")
         sys.exit(1)
-        
+
     assignments = []
-    
     try:
-        with open(filename, mode='r', encoding='utf-8') as file:
+        with open(filename, mode='r', newline='', encoding='utf-8') as file:
             reader = csv.DictReader(file)
-            for row in reader:
-                # Convert numeric fields to floats for calculations
-                assignments.append({
-                    'assignment': row['assignment'],
-                    'group': row['group'],
-                    'score': float(row['score']),
-                    'weight': float(row['weight'])
-                })
+
+            # Validate required columns
+            missing = REQUIRED_COLUMNS - set(reader.fieldnames or [])
+            if missing:
+                print(f"Ooops Missing required columns: {', '.join(missing)}")
+                sys.exit(1)
+
+            for line_num, row in enumerate(reader, start=2):  # start=2 (header is line 1)
+                try:
+                    assignment = row['assignment'].strip()
+                    group = row['group'].strip().lower()
+                    score_str = row['score'].strip()
+                    weight_str = row['weight'].strip()
+
+                    # Empty field check
+                    if not assignment or not group or not score_str or not weight_str:
+                        print(f" Ooops Empty field detected at line {line_num}.")
+                        sys.exit(1)
+
+                    # Convert to float safely
+                    score = float(score_str)
+                    weight = float(weight_str)
+
+                    assignments.append({
+                        'assignment': assignment,
+                        'group': group,
+                        'score': score,
+                        'weight': weight
+                    })
+
+                except ValueError as ve:
+                    print(f" Ooops Invalid number at line {line_num}: {ve}")
+                    sys.exit(1)
 
         if not assignments:
-            print("Ooops the CSV file has no data.")
+            print("Ooops The CSV file has no data rows.")
             sys.exit(1)
 
         return assignments
+
     except Exception as e:
-        print(f"An error occurred while reading the file: {e}")
+        print(f"Ooops Unexpected error while reading file: {e}")
         sys.exit(1)
 
 def evaluate_grades(data):
-    print("\n--- Processing Grades ---")
+    print("\n=== Processing Grades ===")
 
     # Initialize accumulators
     total_weight = 0.0
@@ -58,7 +81,9 @@ def evaluate_grades(data):
 
         # Score validation
         if score < 0 or score > 100:
-            print(f"Error: Invalid score {score} for '{assignment}'.")
+            print(f"Ooops at line {record['line_num']}:  "
+            f"Score '{score}' for '{assignment}' is out of range." 
+            "valid scores must be between 0 and 100.")
             sys.exit(1)
 
         # Weight accumulation
@@ -68,8 +93,10 @@ def evaluate_grades(data):
         elif group == 'summative':
             summative_weight += weight
         else:
-            print(f"Error: Unknown group '{record['group']}' for assignment '{assignment}'")
-            sys.exit(1)
+    print(f"Ooops at line {record['line_num']}: "
+          f"Unknown group '{record['group']}' for assignment '{assignment}'. "
+          "Valid groups are 'formative' or 'summative'.")
+    sys.exit(1)
 
 	
         # Weighted contribution
@@ -85,15 +112,20 @@ def evaluate_grades(data):
             failed_formative.append((assignment, weight, score))
 
     # Weight validation after processing all records
-    if total_weight != 100:
-        print(f"Error: Total weight sum = {total_weight}, expected 100.")
-        sys.exit(1)
-    if formative_weight != 60:
-        print(f"Error: Formative total weight = {formative_weight}, expected 60.")
-        sys.exit(1)
-    if summative_weight != 40:
-        print(f"Error: Summative total weight = {summative_weight}, expected 40.")
-        sys.exit(1)
+if total_weight != 100:
+    print(f"Ooops Total weight is {total_weight}, but expected 100. "
+          "Please check your CSV weights.")
+    sys.exit(1)
+
+if formative_weight != 60:
+    print(f"Ooops Formative total weight is {formative_weight}, but expected 60. "
+          "Ensure formative assignments add up correctly.")
+    sys.exit(1)
+
+if summative_weight != 40:
+    print(f"Ooops Summative total weight is {summative_weight}, but expected 40. "
+          "Ensure summative assignments add up correctly.")
+    sys.exit(1)
 
     # Final calculations
     final_grade = total_weighted_grade
