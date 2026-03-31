@@ -80,10 +80,10 @@ Python Script (grade-evaluator.py)
 - Incorrect weights → exits with descriptive error (expected totals shown)
 
 Bash Script (organizer.sh)
--  Archive directory creation failure → logs [ERROR] and exits
--  File move failure → logs [ERROR] and exits
--  New file creation failure → logs [ERROR] and exits
-- ⚠️Missing grades.csv → logs [WARN] but continues
+- Archive directory creation failure → logs [ERROR] and exits
+- File move failure → logs [ERROR] and exits
+- New file creation failure → logs [ERROR] and exits
+- Missing grades.csv → logs [WARN] but continues
 
 
 
