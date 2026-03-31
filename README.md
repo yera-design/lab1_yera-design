@@ -1,18 +1,18 @@
-                                                    GRADE EVALUATOR & ARCHIVER
-                                           ---------------------------------------------
+## GRADE EVALUATOR & ARCHIVER
+
 This project contains two scripts for managing student grades:
 
 - grade-evaluator.py – Reads a CSV file with assignment data, validates weights and scores, computes final grade and GPA, determines pass/fail status, and suggests which formative assignments are eligible for resubmission.
 
 - organizer.sh – Archives the current grades.csv file by moving it to an archive/ folder with a timestamp, creates a fresh empty grades.csv, and logs the action.
 
-I. REQUIREMENTS
+## I. REQUIREMENTS
 
 - Python 3 (for the evaluator)
 - Unix‑like shell (Linux, macOS, or Git Bash on Windows) to run the Bash script
 - No external Python libraries are needed – only the standard csv, os, and sys modules
 
-II. PURPOSE FOR EACH SCRIPT
+## II. PURPOSE FOR EACH SCRIPT
 
 1. PYTHON SCRIPT – grade-evaluator.py
 
@@ -36,7 +36,7 @@ Features:
 - Suggests which formative assignment(s) to resubmit: those that scored < 50% and have the highest weight among failed formatives
 How to run:
 python grade-evaluator.py
-# or
+ or
 ./grade-evaluator.py
 
 
@@ -58,15 +58,16 @@ Features:
 How to run:
 chmod +x organizer.sh   # make executable (Linux/macOS/WSL)
 ./organizer.sh
-# or
+or
 bash organizer.sh
-III. WORKFLOW EXAMPLE
+
+## III. WORKFLOW EXAMPLE
 - Prepare a valid CSV file named grades.csv with the required columns.
 - Run the Python evaluator to see the student’s grade report.
 - Run the Bash archiver to move the used CSV to the archive and reset the environment for the next student.
 - Repeat steps for the next student and so on.
 
-IV. ERROR HANDLING
+## IV. ERROR HANDLING
 
 Python Script (grade-evaluator.py)
 
